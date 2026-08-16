@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가정법 과거 & 가정법 과거완료 마스터 실전 연습</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chosen Palette: Sage & Warm Neutral */
+        :root {
+            --bg-main: #fcfbf7;
+            --card-bg: #ffffff;
+            --accent-green: #3b7a57;
+            --accent-hover: #2d5e43;
+            --accent-amber: #d97706;
+            --text-main: #1f2937;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 260px;
+            max-height: 300px;
+        }
+
+        .chip-btn {
+            transition: all 0.15s ease-in-out;
+        }
+        .chip-btn:hover {
+            transform: translateY(-1px);
+        }
+        .chip-btn:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">📘</span>
+                <div>
+                    <h1 class="text-xl font-bold text-stone-800">영어 가정법 영작 & 시제 트레이너</h1>
+                    <p class="text-xs text-stone-500">가정법 과거 (현재 사실 반대) vs 가정법 과거완료 (과거 사실 반대)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <nav class="flex gap-2 bg-stone-100 p-1 rounded-xl text-sm font-medium">
+                    <button onclick="switchTab('overview')" id="tab-overview" class="px-4 py-2 rounded-lg bg-white shadow-sm text-emerald-800 font-bold transition">
+                        💡 핵심 요약
+                    </button>
+                    <button onclick="switchTab('practice')" id="tab-practice" class="px-4 py-2 rounded-lg text-stone-600 hover:text-stone-900 transition">
+                        📝 카드 배열 연습
+                    </button>
+                    <button onclick="switchTab('test')" id="tab-test" class="px-4 py-2 rounded-lg text-stone-600 hover:text-stone-900 transition">
+                        🎯 실전 테스트
+                    </button>
+                </nav>
+
+                <!-- 메인 포털 이동 버튼 (상단 헤더 오른쪽) -->
+                <!-- ⚠️ 아래 href 속성에 본인의 메인 포털 GitHub Pages 주소를 넣어주세요! -->
+                <a href="https://gray-humpback.github.io/grammargo/" target="_self" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5 shrink-0">
+                    <span>🏠</span> <span>메인 포털로 돌아가기</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- SECTION 1: CORE GRAMMAR OVERVIEW -->
+        <section id="sec-overview" class="space-y-6">
+            <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                    <span>📌</span> 학습 전 핵심 개념 가이드
+                </h2>
+                <p class="text-sm text-stone-700 leading-relaxed">
+                    가정법을 배울 때 가장 중요한 포인트는 <strong>"말하고자 하는 실제 시점"과 "문법적으로 사용하는 동사의 시제"가 한 단계씩 차이가 난다</strong>는 점입니다. 실제 사실과 반대되거나 일어나기 힘든 상상을 할 때 동사의 시제를 과거로 한 칸 되돌려 표현합니다.
+                </p>
+            </div>
+
+            <!-- Comparison Table Card -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 가정법 과거 -->
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b pb-3 mb-4">
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">현재 사실 반대</span>
+                            <h3 class="text-lg font-bold text-stone-800">1. 가정법 과거 (Hypothetical Present)</h3>
+                        </div>
+                        <p class="text-xs text-stone-500 mb-3">"지금 ~라면, …할 텐데" (현재 상황을 아쉬워하며 가상)</p>
+                        
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-sm space-y-2 font-mono mb-4">
+                            <div><strong class="text-emerald-700">If절:</strong> If + 주어 + <span class="bg-amber-100 px-1 rounded text-amber-900 font-bold">동사 과거형</span> (be동사는 were)</div>
+                            <div><strong class="text-emerald-700">주절:</strong> 주어 + <span class="bg-amber-100 px-1 rounded text-amber-900 font-bold">would/could/might + 동사원형</span></div>
+                        </div>
+
+                        <div class="text-xs text-stone-600 space-y-2">
+                            <p><strong>실제 사실 (평서문):</strong> It is hot, so I open the window. (날씨가 덥다.)</p>
+                            <p class="text-emerald-800 font-medium"><strong>가정법 표현:</strong> If it <u>were</u> cold, I <u>would close</u> the window.<br>(만약 날씨가 춥다면, 창문을 닫을 텐데.)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 가정법 과거완료 -->
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b pb-3 mb-4">
+                            <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-bold">과거 사실 반대</span>
+                            <h3 class="text-lg font-bold text-stone-800">2. 가정법 과거완료 (Hypothetical Past)</h3>
+                        </div>
+                        <p class="text-xs text-stone-500 mb-3">"당시에 ~했었더라면, …했었을 텐데" (과거의 일을 후회/가상)</p>
+                        
+                        <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 text-sm space-y-2 font-mono mb-4">
+                            <div><strong class="text-amber-700">If절:</strong> If + 주어 + <span class="bg-emerald-100 px-1 rounded text-emerald-900 font-bold">had + p.p.</span></div>
+                            <div><strong class="text-amber-700">주절:</strong> 주어 + <span class="bg-emerald-100 px-1 rounded text-emerald-900 font-bold">would/could/might + have + p.p.</span></div>
+                        </div>
+
+                        <div class="text-xs text-stone-600 space-y-2">
+                            <p><strong>실제 사실 (평서문):</strong> I didn't study, so I failed the exam. (공부를 안 해서 떨어졌다.)</p>
+                            <p class="text-amber-800 font-medium"><strong>가정법 표현:</strong> If I <u>had studied</u>, I <u>could have passed</u> the exam.<br>(내가 공부했었더라면, 시험에 합격할 수 있었을 텐데.)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pt-4">
+                <button onclick="switchTab('practice')" class="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-md transition transform hover:scale-105">
+                    👉 제시어 배열 연습 시작하기
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE PRACTICE (UNSCRAMBLE & CONJUGATE) -->
+        <section id="sec-practice" class="hidden space-y-6">
+            <!-- Mode Filter Selector -->
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-bold text-stone-700">학습 영역 선택:</span>
+                    <button onclick="setCategory('all')" id="cat-all" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-700 text-white">전체 보기</button>
+                    <button onclick="setCategory('past')" id="cat-past" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-600 hover:bg-stone-200">가정법 과거 (현재반대)</button>
+                    <button onclick="setCategory('pastperf')" id="cat-pastperf" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-600 hover:bg-stone-200">가정법 과거완료 (과거반대)</button>
+                </div>
+                <div class="text-xs text-stone-500">
+                    단어 카드를 클릭하거나 직접 조합하여 알맞은 가정법 문장을 완성하세요!
+                </div>
+            </div>
+
+            <!-- Practice Card View -->
+            <div id="practice-card-container" class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
+                <!-- Dynamic Content Rendered Here by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: QUIZ & STATS -->
+        <section id="sec-test" class="hidden space-y-6">
+            <div class="bg-stone-900 text-white p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-md">
+                <div>
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold">실력 진단 테스트</span>
+                    <h2 class="text-2xl font-bold mt-2">가정법 조건/결과절 영작 점검</h2>
+                    <p class="text-xs text-stone-400 mt-1">제시된 우리말을 보고 알맞은 가정법 어순과 시제 변형을 선택해보세요.</p>
+                </div>
+                <button onclick="resetTest()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold rounded-xl text-sm transition">
+                    🔄 테스트 다시 시작
+                </button>
+            </div>
+
+            <!-- Test Grid -->
+            <div id="quiz-wrapper" class="space-y-6">
+                <!-- Dynamic Quiz Questions -->
+            </div>
+
+            <!-- Test Summary Chart Dashboard -->
+            <div id="quiz-results" class="hidden bg-white rounded-2xl border border-stone-200 p-6 shadow-sm space-y-6">
+                <h3 class="text-xl font-bold text-center text-stone-800">🎯 테스트 결과 분석</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="chart-container">
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                            <p class="text-xs text-stone-500">최종 점수</p>
+                            <p class="text-3xl font-extrabold text-emerald-700" id="final-score-text">0 / 10</p>
+                        </div>
+                        <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                            <p class="text-xs text-stone-500">학습 진단 리포트</p>
+                            <p class="text-sm font-medium text-stone-700 mt-1" id="diagnosis-text">테스트를 완료하면 분석 결과가 나타납니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-stone-200 py-6">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-stone-400">
+            © 2026 영어 문법 자습 앱 • 가정법 과거 & 가정법 과거완료 학습 트레이너
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Database of Questions & Practice Items
+        const questionsData = [
+            // Category: Subjunctive Past (가정법 과거 - 현재 반대)
+            {
+                id: 1,
+                category: 'past',
+                categoryLabel: '가정법 과거 (현재 반대)',
+                kor: '(현재) 그가 나를 도와준다면, 나는 성공할 수 있을 텐데.',
+                scrambled: ['if', 'he', 'help', 'me,', 'succeed', 'could', 'I'],
+                answer: 'If he helped me, I could succeed.',
+                altAnswer: 'If he helped me, I could succeed',
+                explanation: '현재 도와주지 않아 성공할 수 없는 상황입니다. If절 동사는 과거형 (helped), 주절은 (could + 동사원형 succeed)를 사용합니다.'
+            },
+            {
+                id: 2,
+                category: 'past',
+                categoryLabel: '가정법 과거 (현재 반대)',
+                kor: '(현재) 만약 내가 시간이 있다면, 너를 만나러 갈 텐데.',
+                scrambled: ['if', 'I', 'have', 'time,', 'go', 'to', 'see', 'you', 'would', 'I'],
+                answer: 'If I had time, I would go to see you.',
+                altAnswer: 'If I had time, I would go to see you',
+                explanation: '현재 시간이 없어서 갈 수 없는 상황입니다. If절의 have를 과거형 had로, 주절은 would go를 작성합니다.'
+            },
+            {
+                id: 3,
+                category: 'past',
+                categoryLabel: '가정법 과거 (현재 반대)',
+                kor: '(현재) 만약 날씨가 좋다면, 우리는 소풍을 갈 수 있을 텐데.',
+                scrambled: ['if', 'the', 'weather', 'be', 'fine,', 'could', 'we', 'go', 'on', 'a', 'picnic'],
+                answer: 'If the weather were fine, we could go on a picnic.',
+                altAnswer: 'If the weather were fine, we could go on a picnic',
+                explanation: '가정법 과거에서 be동사는 주어 상관없이 기본적으로 were를 사용하며, 주절에는 could go 형태가 옵니다.'
+            },
+            {
+                id: 4,
+                category: 'past',
+                categoryLabel: '가정법 과거 (현재 반대)',
+                kor: '(현재) 내가 너라면, 그 제안을 받아들일 텐데.',
+                scrambled: ['if', 'I', 'be', 'you,', 'accept', 'the', 'offer', 'would', 'I'],
+                answer: 'If I were you, I would accept the offer.',
+                altAnswer: 'If I were you, I would accept the offer',
+                explanation: '유명한 가정법 관용구 "If I were you"입니다. be동사는 were, 결과절에는 would accept를 결합합니다.'
+            },
+            {
+                id: 5,
+                category: 'past',
+                categoryLabel: '가정법 과거 (현재 반대)',
+                kor: '(현재) 만약 그녀가 그의 전화번호를 안다면, 그녀는 전화를 걸 텐데.',
+                scrambled: ['if', 'she', 'know', 'his', 'phone', 'number,', 'call', 'him', 'would', 'she'],
+                answer: 'If she knew his phone number, she would call him.',
+                altAnswer: 'If she knew his phone number, she would call him',
+                explanation: '현재 전화번호를 몰라서 걸지 못하는 가상입니다. know -> knew, 주절은 would call 구문입니다.'
+            },
+
+            // Category: Subjunctive Past Perfect (가정법 과거완료 - 과거 반대)
+            {
+                id: 6,
+                category: 'pastperf',
+                categoryLabel: '가정법 과거완료 (과거 반대)',
+                kor: '(과거에) 만약 내가 식물에 물을 충분히 줬었다면, 그것은 죽지 않았었을 텐데.',
+                scrambled: ['if', 'I', 'water', 'my', 'plant', 'enough,', 'it', 'die', 'might', 'not', 'have'],
+                answer: 'If I had watered my plant enough, it might not have died.',
+                altAnswer: 'If I had watered my plant enough, it might not have died',
+                explanation: '과거에 물을 주지 않아 죽었던 과거 사실에 반대됩니다. If절은 had watered, 주절은 might not have died입니다.'
+            },
+            {
+                id: 7,
+                category: 'pastperf',
+                categoryLabel: '가정법 과거완료 (과거 반대)',
+                kor: '(과거에) 만약 내가 공부를 더 열심히 했었더라면, 시험에 합격할 수 있었을 텐데.',
+                scrambled: ['if', 'I', 'study', 'harder,', 'pass', 'the', 'exam', 'could', 'have', 'I'],
+                answer: 'If I had studied harder, I could have passed the exam.',
+                altAnswer: 'If I had studied harder, I could have passed the exam',
+                explanation: '과거 시험 불합격에 대한 가상입니다. If절은 had studied (had+p.p.), 주절은 could have passed (조동사과거+have+p.p.)입니다.'
+            },
+            {
+                id: 8,
+                category: 'pastperf',
+                categoryLabel: '가정법 과거완료 (과거 반대)',
+                kor: '(과거에) 만약 네가 나에게 알려줬었더라면, 내가 너를 데리러 갔을 텐데.',
+                scrambled: ['if', 'you', 'inform', 'me,', 'pick', 'you', 'up', 'would', 'have', 'I'],
+                answer: 'If you had informed me, I would have picked you up.',
+                altAnswer: 'If you had informed me, I would have picked you up',
+                explanation: '과거에 알려주지 않아서 데리러 가지 못한 상황입니다. If절 had informed, 주절 would have picked up 조합입니다.'
+            },
+            {
+                id: 9,
+                category: 'pastperf',
+                categoryLabel: '가정법 과거완료 (과거 반대)',
+                kor: '(과거에) 만약 비가 오지 않았었더라면, 우리는 축구를 했을 텐데.',
+                scrambled: ['if', 'it', 'rain', 'not,', 'play', 'soccer', 'would', 'have', 'we'],
+                answer: 'If it had not rained, we would have played soccer.',
+                altAnswer: 'If it had not rained, we would have played soccer',
+                explanation: '과거에 비가 와서 축구를 못했던 사실의 반대입니다. If절 부정 had not rained, 주절 would have played를 씁니다.'
+            },
+            {
+                id: 10,
+                category: 'pastperf',
+                categoryLabel: '가정법 과거완료 (과거 반대)',
+                kor: '(과거에) 만약 그가 버스를 놓치지 않았었더라면, 제시간에 도착할 수 있었을 텐데.',
+                scrambled: ['if', 'he', 'miss', 'not', 'the', 'bus,', 'arrive', 'on', 'time', 'could', 'have', 'he'],
+                answer: 'If he had not missed the bus, he could have arrived on time.',
+                altAnswer: 'If he had not missed the bus, he could have arrived on time',
+                explanation: '과거에 버스를 놓쳤던 사실을 반대로 가정합니다. If절 had not missed, 주절 could have arrived 형태입니다.'
+            }
+        ];
+
+        // Application State Variables
+        let currentTab = 'overview';
+        let activeCategory = 'all';
+        let practiceIndex = 0;
+        let userSelectedChips = [];
+        let testAnswers = {};
+        let scoreChartInstance = null;
+
+        // Tab Switch Logic
+        function switchTab(tabName) {
+            currentTab = tabName;
+            ['overview', 'practice', 'test'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const sec = document.getElementById(`sec-${t}`);
+                if (t === tabName) {
+                    btn.className = "px-4 py-2 rounded-lg bg-white shadow-sm text-emerald-800 font-bold transition";
+                    sec.classList.remove('hidden');
+                } else {
+                    btn.className = "px-4 py-2 rounded-lg text-stone-600 hover:text-stone-900 transition";
+                    sec.classList.add('hidden');
+                }
+            });
+
+            if (tabName === 'practice') {
+                renderPracticeCard();
+            } else if (tabName === 'test') {
+                renderQuizQuestions();
+            }
+        }
+
+        // Category Filter
+        function setCategory(cat) {
+            activeCategory = cat;
+            ['all', 'past', 'pastperf'].forEach(c => {
+                const btn = document.getElementById(`cat-${c}`);
+                if (c === cat) {
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-700 text-white";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-600 hover:bg-stone-200";
+                }
+            });
+            practiceIndex = 0;
+            userSelectedChips = [];
+            renderPracticeCard();
+        }
+
+        // Get Filtered Items
+        function getFilteredData() {
+            if (activeCategory === 'all') return questionsData;
+            return questionsData.filter(q => q.category === activeCategory);
+        }
+
+        // Render Practice Mode Card
+        function renderPracticeCard() {
+            const container = document.getElementById('practice-card-container');
+            const filtered = getFilteredData();
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center text-stone-500 py-8">해당하는 연습 문항이 없습니다.</div>`;
+                return;
+            }
+
+            const item = filtered[practiceIndex];
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b pb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 ${item.category === 'past' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'} rounded-md text-xs font-bold">
+                                ${item.categoryLabel}
+                            </span>
+                            <span class="text-xs text-stone-400 font-bold">문제 ${practiceIndex + 1} / ${filtered.length}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="navigatePractice(-1)" ${practiceIndex === 0 ? 'disabled class="opacity-40 cursor-not-allowed px-3 py-1 bg-stone-100 text-stone-500 rounded text-xs font-bold"' : 'class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded text-xs font-bold"'}>◀ 이전</button>
+                            <button onclick="navigatePractice(1)" ${practiceIndex === filtered.length - 1 ? 'disabled class="opacity-40 cursor-not-allowed px-3 py-1 bg-stone-100 text-stone-500 rounded text-xs font-bold"' : 'class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded text-xs font-bold"'}>다음 ▶</button>
+                        </div>
+                    </div>
+
+                    <!-- Target Korean Sentence -->
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <p class="text-xs text-stone-400 font-bold mb-1">제시된 우리말 (영작 목표)</p>
+                        <p class="text-lg font-bold text-stone-800">${item.kor}</p>
+                    </div>
+
+                    <!-- Scrambled Words Source Pool -->
+                    <div>
+                        <p class="text-xs text-stone-500 mb-2 font-bold">단어 칩 목록 (단어를 클릭하여 조합하거나 동사를 변형하세요):</p>
+                        <div class="flex flex-wrap gap-2 p-3 bg-stone-100/70 rounded-xl border border-dashed border-stone-300 min-h-[60px]" id="scramble-pool">
+                            ${item.scrambled.map((word, idx) => `
+                                <button onclick="addWordToAnswer('${word.replace(/'/g, "\\'")}')" class="chip-btn px-3 py-1.5 bg-white hover:bg-emerald-50 text-stone-800 border border-stone-300 hover:border-emerald-500 rounded-lg text-sm font-mono shadow-sm">
+                                    ${word}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Answer Workspace Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-xs text-stone-500 font-bold">작성한 문장 Workspace:</p>
+                            <button onclick="clearAnswer()" class="text-xs text-red-600 hover:underline">비우기 ❌</button>
+                        </div>
+                        <input type="text" id="practice-input" value="${userSelectedChips.join(' ')}" 
+                            placeholder="단어 칩을 클릭하거나 직접 문장을 완성하세요..." 
+                            class="w-full px-4 py-3 bg-white border border-stone-300 rounded-xl text-stone-800 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner">
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="checkPracticeAnswer()" class="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold rounded-xl shadow-md transition">
+                            정답 확인 및 해설 보기 ✅
+                        </button>
+                        <button onclick="showHint()" class="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-sm font-bold rounded-xl transition">
+                            💡 힌트 보기
+                        </button>
+                    </div>
+
+                    <!-- Feedback & Explanation Box -->
+                    <div id="practice-feedback" class="hidden p-4 rounded-xl text-sm leading-relaxed border"></div>
+                </div>
+            `;
+        }
+
+        // Practice Navigation
+        function navigatePractice(dir) {
+            const filtered = getFilteredData();
+            practiceIndex = Math.max(0, Math.min(filtered.length - 1, practiceIndex + dir));
+            userSelectedChips = [];
+            renderPracticeCard();
+        }
+
+        // Add word to practice input
+        function addWordToAnswer(word) {
+            const input = document.getElementById('practice-input');
+            const currentVal = input.value.trim();
+            input.value = currentVal ? `${currentVal} ${word}` : word;
+        }
+
+        function clearAnswer() {
+            document.getElementById('practice-input').value = '';
+            document.getElementById('practice-feedback').className = 'hidden';
+        }
+
+        function showHint() {
+            const filtered = getFilteredData();
+            const item = filtered[practiceIndex];
+            const feedback = document.getElementById('practice-feedback');
+            feedback.className = "p-4 rounded-xl text-sm border bg-amber-50 border-amber-200 text-amber-900";
+            feedback.innerHTML = `<strong>💡 힌트:</strong> 정답은 "${item.answer.substring(0, 12)}..." 구문으로 시작합니다. 동사 형태 변화를 체크하세요!`;
+        }
+
+        function checkPracticeAnswer() {
+            const filtered = getFilteredData();
+            const item = filtered[practiceIndex];
+            const input = document.getElementById('practice-input').value.trim().replace(/\s+/g, ' ');
+            const feedback = document.getElementById('practice-feedback');
+
+            const isCorrect = (input.toLowerCase() === item.answer.toLowerCase() || input.toLowerCase() === item.altAnswer.toLowerCase());
+
+            feedback.classList.remove('hidden');
+            if (isCorrect) {
+                feedback.className = "p-4 rounded-xl text-sm border bg-emerald-50 border-emerald-300 text-emerald-900 space-y-2";
+                feedback.innerHTML = `
+                    <div class="font-bold text-base flex items-center gap-2 text-emerald-800">
+                        <span>🎉</span> 정답입니다! 정확한 가정법 문장입니다.
+                    </div>
+                    <div><strong>정답 문장:</strong> <span class="font-mono text-stone-800">${item.answer}</span></div>
+                    <div class="text-xs text-emerald-900 border-t border-emerald-200 pt-2"><strong>해설:</strong> ${item.explanation}</div>
+                `;
+            } else {
+                feedback.className = "p-4 rounded-xl text-sm border bg-rose-50 border-rose-300 text-rose-900 space-y-2";
+                feedback.innerHTML = `
+                    <div class="font-bold text-base flex items-center gap-2 text-rose-800">
+                        <span>❌</span> 아쉽네요. 다시 한번 동사의 형태와 어순을 점검해보세요.
+                    </div>
+                    <div><strong>올바른 모범 답안:</strong> <span class="font-mono font-bold text-stone-900">${item.answer}</span></div>
+                    <div class="text-xs text-stone-700 border-t border-rose-200 pt-2"><strong>상세 해설:</strong> ${item.explanation}</div>
+                `;
+            }
+        }
+
+        // Render Test Questions
+        function renderQuizQuestions() {
+            const wrapper = document.getElementById('quiz-wrapper');
+            wrapper.innerHTML = questionsData.map((q, idx) => `
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span class="text-xs font-bold text-stone-400">문항 ${idx + 1} / ${questionsData.length}</span>
+                        <span class="text-xs font-bold px-2 py-0.5 rounded ${q.category === 'past' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                            ${q.categoryLabel}
+                        </span>
+                    </div>
+
+                    <p class="font-bold text-stone-800 text-base">${q.kor}</p>
+
+                    <div>
+                        <label class="block text-xs text-stone-500 mb-1">영문 완성하기:</label>
+                        <input type="text" id="quiz-ans-${q.id}" 
+                            placeholder="영문장 전체를 입력하세요..." 
+                            class="w-full px-4 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+            `).join('') + `
+                <div class="text-center py-4">
+                    <button onclick="gradeQuiz()" class="px-8 py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-base rounded-xl shadow-lg transition transform hover:scale-105">
+                        📝 제출하고 성적표 채점하기
+                    </button>
+                </div>
+            `;
+        }
+
+        // Grade Quiz and Show Dashboard
+        function gradeQuiz() {
+            let correctCount = 0;
+            questionsData.forEach(q => {
+                const input = document.getElementById(`quiz-ans-${q.id}`);
+                const val = input ? input.value.trim().replace(/\s+/g, ' ').toLowerCase() : '';
+                if (val === q.answer.toLowerCase() || val === q.altAnswer.toLowerCase()) {
+                    correctCount++;
+                }
+            });
+
+            const total = questionsData.length;
+            const resultsSection = document.getElementById('quiz-results');
+            resultsSection.classList.remove('hidden');
+
+            document.getElementById('final-score-text').innerText = `${correctCount} / ${total} 개 정답`;
+
+            const diagnosis = document.getElementById('diagnosis-text');
+            if (correctCount === total) {
+                diagnosis.innerText = "🏆 완벽합니다! 가정법 과거와 가정법 과거완료의 시제 공식을 완벽하게 마스터하셨습니다.";
+            } else if (correctCount >= 7) {
+                diagnosis.innerText = "👍 아주 훌륭합니다! 약간의 동사 형태 변형 및 스펠링 오류를 점검해보세요.";
+            } else {
+                diagnosis.innerText = "📚 '핵심 요약' 탭에서 If절과 주절의 시제 짝을 다시 점검한 후 연습해보세요!";
+            }
+
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Chart Rendering
+            renderChart(correctCount, total - correctCount);
+        }
+
+        function resetTest() {
+            document.getElementById('quiz-results').classList.add('hidden');
+            renderQuizQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Chart.js Score Visualization
+        function renderChart(correct, incorrect) {
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            if (scoreChartInstance) {
+                scoreChartInstance.destroy();
+            }
+
+            scoreChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['정답 (Correct)', '오답/미완성 (Incorrect)'],
+                    datasets: [{
+                        data: [correct, incorrect],
+                        backgroundColor: ['#3b7a57', '#e5e7eb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 12 },
+                                boxWidth: 12
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize Default View
+        window.onload = function() {
+            switchTab('overview');
+        };
+    </script>
+</body>
+</html>
